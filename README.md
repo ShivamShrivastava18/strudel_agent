@@ -1,2 +1,1 @@
-"# strudel_agent" 
-"###Strudel Agent" 
+### Strudel Agent
