@@ -1,3 +1,4 @@
+### Strudel Agent
 # 🥝 Strudel Code Generator CLI 🎼
 
 A command-line AI agent that writes [Strudel](https://strudel.cc/) live-coding music patterns using natural language prompts.
