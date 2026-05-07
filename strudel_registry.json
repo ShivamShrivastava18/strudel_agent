@@ -1,0 +1,679 @@
+{
+  "_meta": {
+    "version": "1.0",
+    "description": "Curated registry of valid Strudel identifiers, used to validate generated code and ground tool lookups.",
+    "source": "https://strudel.cc/learn + https://strudel.cc/workshop"
+  },
+  "functions": {
+    "s": {
+      "category": "source",
+      "signature": "s(pattern: string|Pattern)",
+      "description": "Play a sample by name. Same as sound().",
+      "examples": ["s(\"bd sd hh cp\")", "s(\"bd*4\").bank(\"RolandTR909\")"]
+    },
+    "sound": {
+      "category": "source",
+      "signature": "sound(pattern: string|Pattern)",
+      "description": "Play a sample by name. Alias of s().",
+      "examples": ["sound(\"bd sd\")"]
+    },
+    "n": {
+      "category": "source",
+      "signature": "n(pattern: number|Pattern)",
+      "description": "Sample index inside a sound bank, or scale-degree when combined with .scale().",
+      "examples": ["n(\"0 1 2 3\").sound(\"jazz\")", "n(\"0 2 4\").scale(\"C:major\")"]
+    },
+    "note": {
+      "category": "source",
+      "signature": "note(pattern: string|number|Pattern)",
+      "description": "Play a musical note. Accepts note names (c4, d#3, eb5) or MIDI numbers.",
+      "examples": ["note(\"c e g\")", "note(\"<60 62 64>\")"]
+    },
+    "freq": {
+      "category": "source",
+      "signature": "freq(pattern: number|Pattern)",
+      "description": "Set raw frequency in Hz.",
+      "examples": ["freq(\"220 330 440\")"]
+    },
+    "bank": {
+      "category": "source",
+      "signature": "bank(name: string)",
+      "description": "Select a drum-machine bank for samples.",
+      "examples": ["s(\"bd sd\").bank(\"RolandTR909\")"]
+    },
+
+    "stack": {
+      "category": "factory",
+      "signature": "stack(...patterns)",
+      "description": "Layer multiple patterns simultaneously.",
+      "examples": ["stack(s(\"bd*4\"), s(\"hh*8\"))"]
+    },
+    "cat": {
+      "category": "factory",
+      "signature": "cat(...patterns)",
+      "description": "Concatenate patterns sequentially across cycles (one pattern per cycle).",
+      "examples": ["cat(s(\"bd*4\"), s(\"sd*4\"))"]
+    },
+    "seq": {
+      "category": "factory",
+      "signature": "seq(...patterns)",
+      "description": "Concatenate patterns sequentially within a single cycle.",
+      "examples": ["seq(s(\"bd\"), s(\"hh*2\"))"]
+    },
+    "arrange": {
+      "category": "factory",
+      "signature": "arrange(...[cycles, pattern])",
+      "description": "Arrange patterns over a fixed number of cycles each.",
+      "examples": ["arrange([2, s(\"bd*4\")], [2, s(\"sd*4\")])"]
+    },
+    "silence": {
+      "category": "factory",
+      "signature": "silence",
+      "description": "An empty pattern.",
+      "examples": ["silence"]
+    },
+
+    "fast": {
+      "category": "time",
+      "signature": ".fast(factor: number|Pattern)",
+      "description": "Speed up a pattern by factor.",
+      "examples": ["s(\"bd sd\").fast(2)"]
+    },
+    "slow": {
+      "category": "time",
+      "signature": ".slow(factor: number|Pattern)",
+      "description": "Slow a pattern down by factor.",
+      "examples": ["s(\"bd sd hh cp\").slow(2)"]
+    },
+    "hurry": {
+      "category": "time",
+      "signature": ".hurry(factor)",
+      "description": "Like fast() but also pitches samples up.",
+      "examples": ["s(\"bd sd\").hurry(2)"]
+    },
+    "rev": {
+      "category": "time",
+      "signature": ".rev()",
+      "description": "Reverse a pattern.",
+      "examples": ["s(\"bd sd hh cp\").rev()"]
+    },
+    "palindrome": {
+      "category": "time",
+      "signature": ".palindrome()",
+      "description": "Play forward then reverse.",
+      "examples": ["s(\"bd sd hh cp\").palindrome()"]
+    },
+    "iter": {
+      "category": "time",
+      "signature": ".iter(n)",
+      "description": "Rotate the pattern starting position by 1/n each cycle.",
+      "examples": ["s(\"bd sd hh cp\").iter(4)"]
+    },
+    "chunk": {
+      "category": "time",
+      "signature": ".chunk(n, fn)",
+      "description": "Apply fn to one of n equally-sized chunks each cycle.",
+      "examples": ["s(\"bd*8\").chunk(4, x => x.fast(2))"]
+    },
+    "off": {
+      "category": "time",
+      "signature": ".off(time, fn)",
+      "description": "Layer a transformed copy offset by time.",
+      "examples": ["note(\"c e g\").off(1/8, x => x.add(7))"]
+    },
+    "early": {
+      "category": "time",
+      "signature": ".early(amount)",
+      "description": "Shift events earlier in time.",
+      "examples": ["s(\"bd*4\").early(1/16)"]
+    },
+    "late": {
+      "category": "time",
+      "signature": ".late(amount)",
+      "description": "Shift events later in time.",
+      "examples": ["s(\"bd*4\").late(1/16)"]
+    },
+    "ply": {
+      "category": "time",
+      "signature": ".ply(n)",
+      "description": "Repeat each event n times.",
+      "examples": ["s(\"bd sd\").ply(2)"]
+    },
+
+    "every": {
+      "category": "conditional",
+      "signature": ".every(n, fn)",
+      "description": "Apply fn every n cycles.",
+      "examples": ["s(\"bd sd\").every(4, x => x.rev())"]
+    },
+    "firstOf": {
+      "category": "conditional",
+      "signature": ".firstOf(n, fn)",
+      "description": "Apply fn to the first of every n cycles. Alias of every().",
+      "examples": ["s(\"bd sd\").firstOf(4, x => x.fast(2))"]
+    },
+    "lastOf": {
+      "category": "conditional",
+      "signature": ".lastOf(n, fn)",
+      "description": "Apply fn to the last of every n cycles.",
+      "examples": ["s(\"bd sd\").lastOf(4, x => x.rev())"]
+    },
+    "when": {
+      "category": "conditional",
+      "signature": ".when(boolPattern, fn)",
+      "description": "Apply fn when boolean pattern is true.",
+      "examples": []
+    },
+    "mask": {
+      "category": "conditional",
+      "signature": ".mask(boolPattern)",
+      "description": "Keep events where mask is truthy.",
+      "examples": ["s(\"bd*8\").mask(\"1 0 1 1\")"]
+    },
+    "struct": {
+      "category": "conditional",
+      "signature": ".struct(boolPattern)",
+      "description": "Apply rhythm structure from boolean pattern.",
+      "examples": ["note(\"c\").struct(\"1 0 1 1\")"]
+    },
+    "sometimes": {
+      "category": "conditional",
+      "signature": ".sometimes(fn)",
+      "description": "Apply fn 50% of the time per event.",
+      "examples": ["s(\"bd sd\").sometimes(x => x.fast(2))"]
+    },
+    "sometimesBy": {
+      "category": "conditional",
+      "signature": ".sometimesBy(prob, fn)",
+      "description": "Apply fn with given probability.",
+      "examples": ["s(\"bd sd\").sometimesBy(.25, x => x.rev())"]
+    },
+    "often": {
+      "category": "conditional",
+      "signature": ".often(fn)",
+      "description": "Apply fn ~75% of the time.",
+      "examples": []
+    },
+    "rarely": {
+      "category": "conditional",
+      "signature": ".rarely(fn)",
+      "description": "Apply fn ~25% of the time.",
+      "examples": []
+    },
+    "someCycles": {
+      "category": "conditional",
+      "signature": ".someCycles(fn)",
+      "description": "Apply fn for some entire cycles.",
+      "examples": []
+    },
+    "someCyclesBy": {
+      "category": "conditional",
+      "signature": ".someCyclesBy(prob, fn)",
+      "description": "Apply fn for some cycles with probability.",
+      "examples": []
+    },
+    "degrade": {
+      "category": "conditional",
+      "signature": ".degrade()",
+      "description": "Randomly drop 50% of events.",
+      "examples": ["s(\"hh*16\").degrade()"]
+    },
+    "degradeBy": {
+      "category": "conditional",
+      "signature": ".degradeBy(prob)",
+      "description": "Randomly drop a fraction of events.",
+      "examples": ["s(\"hh*16\").degradeBy(.3)"]
+    },
+
+    "jux": {
+      "category": "stereo",
+      "signature": ".jux(fn)",
+      "description": "Play original on left channel, fn-transformed copy on right.",
+      "examples": ["s(\"bd sd hh cp\").jux(rev)"]
+    },
+    "juxBy": {
+      "category": "stereo",
+      "signature": ".juxBy(amount, fn)",
+      "description": "Like jux but stereo-spread is controllable.",
+      "examples": []
+    },
+    "superimpose": {
+      "category": "stereo",
+      "signature": ".superimpose(fn)",
+      "description": "Layer original with a transformed copy.",
+      "examples": ["note(\"c e g\").superimpose(x => x.add(7))"]
+    },
+    "layer": {
+      "category": "stereo",
+      "signature": ".layer(...fns)",
+      "description": "Layer multiple transformed copies.",
+      "examples": ["note(\"c e g\").layer(x => x, x => x.add(7))"]
+    },
+
+    "gain": {
+      "category": "amp",
+      "signature": ".gain(value: number|Pattern)",
+      "description": "Set amplitude (0..1+).",
+      "examples": ["s(\"bd*4\").gain(.8)"]
+    },
+    "velocity": {
+      "category": "amp",
+      "signature": ".velocity(value)",
+      "description": "Set per-event velocity 0..1.",
+      "examples": []
+    },
+    "pan": {
+      "category": "amp",
+      "signature": ".pan(value)",
+      "description": "Stereo pan, 0=left .. 1=right.",
+      "examples": ["s(\"bd cp\").pan(\"0 1\")"]
+    },
+
+    "lpf": {
+      "category": "filter",
+      "signature": ".lpf(cutoff: number|Pattern)",
+      "description": "Low-pass filter cutoff in Hz.",
+      "examples": ["s(\"hh*16\").lpf(\"200 1000 4000\")"],
+      "aliases": ["cutoff"]
+    },
+    "lpq": {
+      "category": "filter",
+      "signature": ".lpq(q)",
+      "description": "Low-pass filter resonance.",
+      "examples": ["s(\"hh*16\").lpf(800).lpq(10)"],
+      "aliases": ["resonance"]
+    },
+    "hpf": {
+      "category": "filter",
+      "signature": ".hpf(cutoff)",
+      "description": "High-pass filter cutoff in Hz.",
+      "examples": ["s(\"hh*16\").hpf(2000)"],
+      "aliases": ["hcutoff"]
+    },
+    "hpq": {
+      "category": "filter",
+      "signature": ".hpq(q)",
+      "description": "High-pass filter resonance.",
+      "examples": [],
+      "aliases": ["hresonance"]
+    },
+    "bpf": {
+      "category": "filter",
+      "signature": ".bpf(freq)",
+      "description": "Band-pass filter frequency.",
+      "examples": [],
+      "aliases": ["bandf"]
+    },
+    "bpq": {
+      "category": "filter",
+      "signature": ".bpq(q)",
+      "description": "Band-pass filter Q.",
+      "examples": [],
+      "aliases": ["bandq"]
+    },
+    "vowel": {
+      "category": "filter",
+      "signature": ".vowel(letter)",
+      "description": "Apply a vowel formant filter (a/e/i/o/u).",
+      "examples": ["note(\"c e g\").s(\"sawtooth\").vowel(\"<a e i o>\")"]
+    },
+
+    "attack": {
+      "category": "envelope",
+      "signature": ".attack(seconds)",
+      "description": "Amp envelope attack time.",
+      "examples": []
+    },
+    "decay": {
+      "category": "envelope",
+      "signature": ".decay(seconds)",
+      "description": "Amp envelope decay time.",
+      "examples": []
+    },
+    "sustain": {
+      "category": "envelope",
+      "signature": ".sustain(level)",
+      "description": "Amp envelope sustain level.",
+      "examples": []
+    },
+    "release": {
+      "category": "envelope",
+      "signature": ".release(seconds)",
+      "description": "Amp envelope release time.",
+      "examples": []
+    },
+    "adsr": {
+      "category": "envelope",
+      "signature": ".adsr(\"a:d:s:r\")",
+      "description": "Set amp envelope as colon-separated string.",
+      "examples": ["note(\"c e g\").s(\"sawtooth\").adsr(\".01:.2:.4:.5\")"]
+    },
+
+    "room": {
+      "category": "fx",
+      "signature": ".room(amount)",
+      "description": "Reverb send amount (0..1+).",
+      "examples": ["s(\"bd sd\").room(.5)"]
+    },
+    "roomsize": {
+      "category": "fx",
+      "signature": ".roomsize(size)",
+      "description": "Reverb room size.",
+      "examples": [],
+      "aliases": ["size", "rsize"]
+    },
+    "delay": {
+      "category": "fx",
+      "signature": ".delay(amount)",
+      "description": "Delay send amount.",
+      "examples": ["s(\"bd cp\").delay(.5)"]
+    },
+    "delaytime": {
+      "category": "fx",
+      "signature": ".delaytime(seconds)",
+      "description": "Delay time in seconds (or fraction with mini-notation).",
+      "examples": ["s(\"cp\").delay(.7).delaytime(.25)"],
+      "aliases": ["dt"]
+    },
+    "delayfeedback": {
+      "category": "fx",
+      "signature": ".delayfeedback(amount)",
+      "description": "Delay feedback amount.",
+      "examples": [],
+      "aliases": ["fb", "delayfb"]
+    },
+    "crush": {
+      "category": "fx",
+      "signature": ".crush(bits)",
+      "description": "Bit-crusher (lower = more crushed).",
+      "examples": ["s(\"bd*4\").crush(4)"]
+    },
+    "coarse": {
+      "category": "fx",
+      "signature": ".coarse(n)",
+      "description": "Sample-rate reducer.",
+      "examples": []
+    },
+    "shape": {
+      "category": "fx",
+      "signature": ".shape(amount)",
+      "description": "Wave-shaper distortion.",
+      "examples": []
+    },
+    "distort": {
+      "category": "fx",
+      "signature": ".distort(amount)",
+      "description": "Distortion.",
+      "examples": []
+    },
+    "phaser": {
+      "category": "fx",
+      "signature": ".phaser(rate)",
+      "description": "Phaser rate in Hz.",
+      "examples": []
+    },
+    "phaserdepth": {
+      "category": "fx",
+      "signature": ".phaserdepth(d)",
+      "description": "Phaser modulation depth (0-1).",
+      "examples": []
+    },
+    "phaserrate": {
+      "category": "fx",
+      "signature": ".phaserrate(r)",
+      "description": "Phaser rate (alias of .phaser()).",
+      "examples": []
+    },
+    "phasersweep": {
+      "category": "fx",
+      "signature": ".phasersweep(s)",
+      "description": "Phaser sweep range in semitones.",
+      "examples": []
+    },
+    "phasercenter": {
+      "category": "fx",
+      "signature": ".phasercenter(c)",
+      "description": "Phaser center frequency in Hz.",
+      "examples": []
+    },
+    "tremolo": {
+      "category": "fx",
+      "signature": ".tremolo(rate)",
+      "description": "Amplitude tremolo rate.",
+      "examples": []
+    },
+    "vib": {
+      "category": "fx",
+      "signature": ".vib(rate)",
+      "description": "Vibrato rate (alias of vibrato).",
+      "examples": ["note(\"a e\").vib(4)"],
+      "aliases": ["vibrato"]
+    },
+    "vibmod": {
+      "category": "fx",
+      "signature": ".vibmod(depth)",
+      "description": "Vibrato depth in semitones.",
+      "examples": ["note(\"a e\").vib(4).vibmod(.5)"],
+      "aliases": ["vmod"]
+    },
+    "orbit": {
+      "category": "fx",
+      "signature": ".orbit(n)",
+      "description": "Assign to FX bus orbit n.",
+      "examples": []
+    },
+    "speed": {
+      "category": "fx",
+      "signature": ".speed(rate)",
+      "description": "Sample playback speed (also pitches).",
+      "examples": ["s(\"bd*4\").speed(\"1 2 .5 1\")"]
+    },
+    "begin": {
+      "category": "fx",
+      "signature": ".begin(0..1)",
+      "description": "Start position within sample.",
+      "examples": []
+    },
+    "end": {
+      "category": "fx",
+      "signature": ".end(0..1)",
+      "description": "End position within sample.",
+      "examples": []
+    },
+    "loop": {
+      "category": "fx",
+      "signature": ".loop(0|1)",
+      "description": "Loop the sample.",
+      "examples": []
+    },
+    "cut": {
+      "category": "fx",
+      "signature": ".cut(group)",
+      "description": "Cut group: events in same group cancel each other.",
+      "examples": ["s(\"hh oh\").cut(1)"]
+    },
+
+    "fm": {
+      "category": "synth",
+      "signature": ".fm(index)",
+      "description": "FM modulation index (use with synth waveforms).",
+      "examples": ["note(\"c e g\").s(\"sine\").fm(2)"]
+    },
+    "fmh": {
+      "category": "synth",
+      "signature": ".fmh(ratio)",
+      "description": "FM harmonicity ratio.",
+      "examples": []
+    },
+    "fmenv": {
+      "category": "synth",
+      "signature": ".fmenv(type)",
+      "description": "FM envelope type ('exp' or 'lin').",
+      "examples": []
+    },
+    "fmattack": {"category": "synth", "signature": ".fmattack(s)", "description": "FM env attack.", "examples": []},
+    "fmdecay": {"category": "synth", "signature": ".fmdecay(s)", "description": "FM env decay.", "examples": []},
+    "fmsustain": {"category": "synth", "signature": ".fmsustain(level)", "description": "FM env sustain.", "examples": []},
+    "noise": {"category": "synth", "signature": ".noise(amount)", "description": "Mix in noise.", "examples": []},
+
+    "scale": {
+      "category": "tonal",
+      "signature": ".scale(\"root:mode\")",
+      "description": "Map n() degrees to a scale.",
+      "examples": ["n(\"0 2 4 6\").scale(\"C:major\")"]
+    },
+    "transpose": {
+      "category": "tonal",
+      "signature": ".transpose(semitones)",
+      "description": "Transpose in semitones.",
+      "examples": ["note(\"c e g\").transpose(7)"]
+    },
+    "scaleTranspose": {
+      "category": "tonal",
+      "signature": ".scaleTranspose(steps)",
+      "description": "Transpose by scale steps.",
+      "examples": []
+    },
+    "chord": {
+      "category": "tonal",
+      "signature": ".chord(\"name\")",
+      "description": "Set chord context.",
+      "examples": ["chord(\"<C^7 Dm7>\").voicings()"]
+    },
+    "voicings": {
+      "category": "tonal",
+      "signature": ".voicings()",
+      "description": "Generate voicings from chord context.",
+      "examples": []
+    },
+    "arp": {
+      "category": "tonal",
+      "signature": ".arp(\"pattern\")",
+      "description": "Arpeggiate notes of a chord.",
+      "examples": ["chord(\"<C Am F G>\").voicings().arp(\"0 1 2 3\")"]
+    },
+    "arpWith": {
+      "category": "tonal",
+      "signature": ".arpWith(fn)",
+      "description": "Arpeggiate using a function.",
+      "examples": []
+    },
+    "octave": {"category": "tonal", "signature": ".octave(n)", "description": "Octave offset.", "examples": []},
+    "add": {"category": "math", "signature": ".add(value)", "description": "Add to numeric pattern.", "examples": ["n(\"0 2 4\").add(2)"]},
+    "sub": {"category": "math", "signature": ".sub(value)", "description": "Subtract.", "examples": []},
+    "mul": {"category": "math", "signature": ".mul(value)", "description": "Multiply.", "examples": []},
+    "div": {"category": "math", "signature": ".div(value)", "description": "Divide.", "examples": []},
+    "round": {"category": "math", "signature": ".round()", "description": "Round to nearest integer.", "examples": []},
+    "floor": {"category": "math", "signature": ".floor()", "description": "Floor.", "examples": []},
+    "ceil": {"category": "math", "signature": ".ceil()", "description": "Ceiling.", "examples": []},
+    "range": {
+      "category": "math",
+      "signature": ".range(min, max)",
+      "description": "Map signal range to [min,max].",
+      "examples": ["sine.range(200, 4000).slow(8)"]
+    },
+    "rangex": {
+      "category": "math",
+      "signature": ".rangex(min, max)",
+      "description": "Exponential range mapping (good for filter cutoffs).",
+      "examples": ["sine.rangex(200, 4000).slow(8)"]
+    },
+
+    "_scope": {"category": "viz", "signature": "._scope()", "description": "Inline oscilloscope view.", "examples": []},
+    "_pitchwheel": {"category": "viz", "signature": "._pitchwheel()", "description": "Pitch-wheel viz.", "examples": []},
+    "_punchcard": {"category": "viz", "signature": "._punchcard()", "description": "Punchcard viz.", "examples": []},
+    "_spiral": {"category": "viz", "signature": "._spiral()", "description": "Spiral viz.", "examples": []},
+
+    "midi": {"category": "io", "signature": ".midi(deviceName?)", "description": "Send to MIDI device.", "examples": []},
+    "osc": {"category": "io", "signature": ".osc()", "description": "Send via OSC.", "examples": []},
+    "mute": {"category": "control", "signature": ".mute()", "description": "Silence the pattern.", "examples": []},
+    "solo": {"category": "control", "signature": ".solo()", "description": "Solo this pattern.", "examples": []},
+
+    "setcps": {"category": "global", "signature": "setcps(cps)", "description": "Set cycles per second globally.", "examples": ["setcps(.5)"]},
+    "setcpm": {"category": "global", "signature": "setcpm(bpm)", "description": "Set cycles per minute (treats cycle as bar).", "examples": ["setcpm(120/4)"]},
+    "cpm": {"category": "global", "signature": ".cpm(bpm)", "description": "Set tempo as cycles-per-minute on a pattern.", "examples": []}
+  },
+
+  "signals": {
+    "sine": "Sine LFO 0..1",
+    "cosine": "Cosine LFO 0..1",
+    "saw": "Sawtooth LFO 0..1",
+    "tri": "Triangle LFO 0..1",
+    "square": "Square LFO 0/1",
+    "rand": "Random 0..1, continuous",
+    "rand2": "Random -1..1",
+    "irand": "Random integer 0..n-1",
+    "perlin": "Perlin noise 0..1",
+    "time": "Cycle time as a signal"
+  },
+
+  "random_choice": {
+    "choose": "choose(...values) — random choice each event",
+    "chooseCycles": "chooseCycles(...values) — random per cycle",
+    "wchoose": "wchoose([v, weight], ...) — weighted random",
+    "pickF": "pick from a list using a numeric pattern as index",
+    "pick": "pick(pattern, list) — index-based pick"
+  },
+
+  "synths": [
+    "sine", "square", "sawtooth", "triangle",
+    "supersaw", "pulse",
+    "white", "pink", "brown",
+    "z_sine", "z_saw", "z_square", "z_triangle",
+    "gm_lead_1_square", "gm_lead_2_sawtooth",
+    "piano", "casio"
+  ],
+
+  "drum_machines": [
+    "RolandTR808", "RolandTR909", "RolandTR707", "RolandTR606",
+    "RolandTR626", "RolandTR505", "RolandTR808Long",
+    "AkaiLinn", "AkaiXR10", "AkaiMPC60",
+    "RhythmAce", "ViscoSpaceDrum",
+    "AlesisHR16", "AlesisSR16",
+    "BossDR110", "BossDR220",
+    "EmuDrumulator", "EmuModular", "EmuSP12",
+    "KorgKPR77", "KorgKR55", "KorgMinipops",
+    "OberheimDMX", "OberheimDX",
+    "Yamaha RX5", "YamahaRX21", "YamahaRX21L",
+    "LinnDrum"
+  ],
+
+  "common_samples": [
+    "bd", "sd", "hh", "oh", "cp", "cb", "rim", "sh",
+    "lt", "mt", "ht", "lc", "mc", "hc",
+    "cy", "ride", "crash", "tom",
+    "perc", "kick", "snare", "hat",
+    "click", "metal", "wood",
+    "jazz", "casio", "numbers",
+    "east", "breaks165", "breaks157", "breaks125",
+    "amencutup", "alphabet", "808bd", "808sd", "808hc", "808oh"
+  ],
+
+  "mini_notation": {
+    "*": "repeat: 'bd*4' = bd four times",
+    "/": "slow: 'bd/2' = once every 2 cycles",
+    "?": "degrade: 'bd?' = 50% chance",
+    "!": "replicate: 'bd!3' = bd repeated occupying same time",
+    "<>": "alternation across cycles: '<a b c>'",
+    "[]": "subgroup: '[bd sd]'",
+    ",": "parallel: '[bd, hh*4]'",
+    "~": "rest",
+    "@": "weight: 'bd@2 sd' = bd is twice as long",
+    ":": "select sub-sample: 'bd:2'",
+    "(): euclidean": "'bd(3,8)' = euclidean rhythm 3 over 8",
+    ".": "alternate notation alias separator"
+  },
+
+  "common_pitfalls": [
+    "Use s() or sound() for samples, note() for pitched notes — don't mix arbitrarily.",
+    "n() inside a sound bank picks sample index; n() with .scale() gives scale degrees.",
+    "Filter cutoffs should be in Hz (e.g. 200..8000), not normalized 0..1.",
+    "Reverb amount is .room(); 'reverb()' is NOT a Strudel function.",
+    "Use .delaytime() and .delayfeedback() (or aliases dt/fb), not 'echo()'.",
+    "stack(), cat(), seq() take patterns as arguments separated by commas, not arrays.",
+    "Strudel uses method chaining: s(\"bd\").fast(2), not fast(s(\"bd\"), 2).",
+    "Mini-notation strings go inside s(), n(), or note(); don't pass plain strings to .gain() etc.",
+    "Use .cpm(120/4) to set BPM treating the cycle as one bar of 4 beats.",
+    "Random helpers: choose, chooseCycles, wchoose, pick, pickF — NOT 'random()' or 'randomChoice()'."
+  ]
+}
