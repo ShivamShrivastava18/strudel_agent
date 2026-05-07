@@ -1,0 +1,21 @@
+{"tags": ["drums", "basic"], "prompt": "kick on every beat, hi-hat on 16ths", "code": "stack(\n  s(\"bd*4\"),\n  s(\"hh*16\").gain(.6)\n)"}
+{"tags": ["drums", "rock"], "prompt": "basic rock beat: kick 1 and 3, snare 2 and 4, closed hat 8ths", "code": "stack(\n  s(\"bd ~ ~ ~ bd ~ ~ ~\"),\n  s(\"~ ~ sd ~ ~ ~ sd ~\"),\n  s(\"hh*8\").gain(.7)\n).bank(\"RolandTR909\")"}
+{"tags": ["drums", "house"], "prompt": "four-on-the-floor house beat with offbeat open hats", "code": "stack(\n  s(\"bd*4\"),\n  s(\"~ cp\").slow(2),\n  s(\"~ oh\").gain(.7)\n).bank(\"RolandTR909\")"}
+{"tags": ["drums", "euclidean"], "prompt": "tresillo: kick 3 over 8 with hats", "code": "stack(\n  s(\"bd(3,8)\"),\n  s(\"hh*8\").gain(.5)\n)"}
+{"tags": ["drums", "breakbeat"], "prompt": "amen-style breakbeat with degraded hats", "code": "stack(\n  s(\"bd ~ sd ~ bd bd sd ~\"),\n  s(\"hh*16\").gain(.6).degradeBy(.2)\n).cpm(160/4)"}
+{"tags": ["bass", "synth"], "prompt": "sub bass on root note c, slow gliding filter", "code": "note(\"c2 c2 g1 c2\").s(\"sawtooth\")\n  .lpf(sine.range(200, 1500).slow(8))\n  .lpq(8).gain(.7)"}
+{"tags": ["bass", "acid"], "prompt": "acid bassline with resonant filter sweep", "code": "note(\"c2 [eb2 c2] g2 [c2 g1]\")\n  .s(\"sawtooth\")\n  .lpf(sine.range(300, 3000).slow(4))\n  .lpq(20)\n  .decay(.1).sustain(0)"}
+{"tags": ["melody", "scale"], "prompt": "ascending C major arpeggio over 2 bars", "code": "n(\"<0 2 4 6 7 6 4 2>\").scale(\"C:major\")\n  .s(\"piano\")\n  .room(.4)"}
+{"tags": ["melody", "lead"], "prompt": "wandering lead in D dorian with vibrato and reverb", "code": "n(\"0 2 4 [3 1] 5 4 2 0\")\n  .scale(\"D:dorian\")\n  .s(\"sawtooth\")\n  .vib(4).vibmod(.25)\n  .lpf(2000).room(.6)\n  .gain(.5)"}
+{"tags": ["chords", "pad"], "prompt": "slow chord pad cycling I, vi, IV, V in C", "code": "chord(\"<C Am F G>/2\")\n  .voicings(\"lefthand\")\n  .s(\"sawtooth\")\n  .attack(.5).release(1)\n  .lpf(1500).room(.8).gain(.5)"}
+{"tags": ["chords", "arp"], "prompt": "arpeggiated chord progression", "code": "chord(\"<C^7 Am7 Dm7 G7>\").voicings()\n  .arp(\"0 1 2 3\")\n  .s(\"piano\")\n  .room(.5)"}
+{"tags": ["polyrhythm"], "prompt": "polyrhythm: 3 against 4 with two percussion sounds", "code": "stack(\n  s(\"cp*3\").gain(.7),\n  s(\"hh*4\").gain(.6)\n)"}
+{"tags": ["fx", "delay"], "prompt": "vocal-style stab with rhythmic delay", "code": "s(\"cp ~ ~ ~\").gain(.9)\n  .delay(.7).delaytime(\"3/16\").delayfeedback(.6)\n  .room(.3)"}
+{"tags": ["fx", "filter-modulation"], "prompt": "white-noise sweep with slow filter", "code": "s(\"white\").gain(.4)\n  .lpf(sine.rangex(200, 8000).slow(16))\n  .lpq(6)"}
+{"tags": ["jux", "stereo"], "prompt": "drum loop with reversed copy on the right channel", "code": "s(\"bd sd hh cp\").jux(rev)"}
+{"tags": ["every", "transform"], "prompt": "drum pattern that doubles up every 4th cycle", "code": "s(\"bd ~ sd ~\").every(4, x => x.fast(2))"}
+{"tags": ["fm", "synth"], "prompt": "FM bell-like tones", "code": "note(\"<c5 e5 g5 b5>\")\n  .s(\"sine\")\n  .fm(2).fmh(3)\n  .attack(.001).release(.6)\n  .room(.6)"}
+{"tags": ["full", "song"], "prompt": "minimal techno loop: kick, hat, bass, lead", "code": "setcps(.55)\nstack(\n  s(\"bd*4\"),\n  s(\"~ oh\").gain(.6),\n  note(\"c2 c2 [eb2 c2] g1\").s(\"sawtooth\").lpf(800).lpq(8).gain(.7),\n  n(\"0 2 4 5 4 2\").scale(\"C:minor\").s(\"square\")\n    .lpf(sine.rangex(400, 3000).slow(16))\n    .room(.5).gain(.4).slow(2)\n)"}
+{"tags": ["mini-notation"], "prompt": "alternating samples per cycle", "code": "s(\"<bd sd cp> hh*4\")"}
+{"tags": ["choose", "random"], "prompt": "random sample choice each event", "code": "s(choose(\"bd\", \"sd\", \"cp\", \"hh\")).fast(4)"}
+{"tags": ["struct"], "prompt": "apply euclidean structure to a sustained note", "code": "note(\"c3\").s(\"sawtooth\").struct(\"1(3,8)\").decay(.2).sustain(0)"}
