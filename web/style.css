@@ -1,0 +1,62 @@
+/* Strudel Agent — minimal three-pane UI */
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; font-family: ui-monospace, "JetBrains Mono", Menlo, monospace; background: #0d0f12; color: #e3e6ea; }
+header {
+  display: flex; align-items: baseline; gap: 1rem;
+  padding: .6rem 1rem; border-bottom: 1px solid #22272e;
+  background: #14181d;
+}
+header h1 { margin: 0; font-size: 1.05rem; font-weight: 600; }
+.muted { color: #7d8590; font-size: .85rem; }
+main {
+  display: grid; grid-template-columns: 1fr 1.4fr;
+  gap: 1px; background: #22272e;
+  height: calc(100vh - 50px);
+}
+.pane { display: flex; flex-direction: column; min-height: 0; background: #0d0f12; }
+.pane.left { padding: 1rem; gap: .75rem; }
+.pane.right { padding: 0; }
+
+.prompt-row { display: flex; gap: .5rem; }
+#prompt {
+  flex: 1; background: #1c2128; color: #e3e6ea; border: 1px solid #30363d;
+  padding: .55rem .7rem; border-radius: 4px; font: inherit;
+}
+#prompt:focus { outline: none; border-color: #4d8cff; }
+
+button {
+  background: #4d8cff; color: white; border: 0; padding: .55rem .9rem;
+  border-radius: 4px; cursor: pointer; font: inherit; font-weight: 500;
+}
+button.secondary { background: #2d333b; color: #c9d1d9; }
+button:hover { filter: brightness(1.1); }
+button:disabled { opacity: .5; cursor: not-allowed; }
+
+#thinking {
+  flex: 1; overflow-y: auto; padding: .5rem;
+  background: #14181d; border: 1px solid #22272e; border-radius: 4px;
+  font-size: .82rem; line-height: 1.5;
+}
+.event { padding: .4rem .55rem; margin-bottom: .35rem; border-radius: 3px; border-left: 3px solid #444; }
+.event .label { font-weight: 600; font-size: .72rem; text-transform: uppercase; letter-spacing: .04em; opacity: .8; }
+.event pre { margin: .25rem 0 0; white-space: pre-wrap; word-break: break-word; font: inherit; }
+.event.thinking { border-left-color: #777; background: #181c22; color: #aab1bb; }
+.event.assistant { border-left-color: #c9d1d9; background: #181c22; }
+.event.tool_call { border-left-color: #4d8cff; background: #131a25; }
+.event.tool_result { border-left-color: #2d6a4f; background: #131c17; color: #b4c9bd; }
+.event.vibe { border-left-color: #d29922; background: #1f1a0e; }
+.event.error { border-left-color: #f85149; background: #2a1313; color: #ffa7a0; }
+.event.final { border-left-color: #56d364; background: #0e1f12; }
+
+.code-row { display: flex; flex-direction: column; padding: .75rem; gap: .5rem; }
+.code-actions { display: flex; gap: .5rem; align-items: center; flex-wrap: wrap; }
+#code {
+  height: 32vh; resize: vertical;
+  background: #14181d; color: #e3e6ea; border: 1px solid #30363d;
+  border-radius: 4px; padding: .6rem; font: inherit; font-size: .9rem;
+  line-height: 1.5;
+}
+#code:focus { outline: none; border-color: #4d8cff; }
+#strudel { flex: 1; width: 100%; border: 0; border-top: 1px solid #22272e; min-height: 40vh; }
+#validation.ok { color: #56d364; }
+#validation.err { color: #f85149; }
