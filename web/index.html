@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Strudel Agent</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header>
+  <h1>Strudel Agent</h1>
+  <span id="config" class="muted">loading…</span>
+</header>
+
+<main>
+  <!-- Left: prompt + agent thinking -->
+  <section class="pane left">
+    <div class="prompt-row">
+      <input id="prompt" type="text" placeholder="e.g. make it sound like daft punk" autofocus>
+      <button id="go">Generate</button>
+    </div>
+    <div id="status" class="muted"></div>
+    <div id="thinking" class="thinking"></div>
+  </section>
+
+  <!-- Right: code editor + strudel iframe -->
+  <section class="pane right">
+    <div class="code-row">
+      <div class="code-actions">
+        <button id="play">▶ Play / reload</button>
+        <button id="open-strudel" class="secondary">↗ Open in strudel.cc</button>
+        <span id="validation" class="muted"></span>
+      </div>
+      <textarea id="code" spellcheck="false" placeholder="Generated Strudel code will appear here. You can edit it and hit Play."></textarea>
+    </div>
+    <iframe id="strudel" title="strudel REPL"
+      src="https://strudel.cc/" allow="autoplay" loading="lazy"></iframe>
+  </section>
+</main>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
